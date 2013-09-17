@@ -148,3 +148,61 @@ sum''' = foldr' add 0
 
 
 
+data Nat'' = Zero | Succ Nat'' deriving (Eq, Ord, Show)
+
+test :: Nat''
+test = 
+  let 
+    add = \x -> \y -> case x of 
+                         Zero   -> y
+                         Succ u -> Succ (add u y)
+
+  in
+    let
+      two = Succ (Succ Zero)
+    in
+      add two two
+
+
+data Bool' = False' | True' 
+data Season' = Winter | Spring | Summer | Fall
+data Shape' = Circle' Float | Rectangle' Float Float
+data Exp'' = Lit Int | Add Exp'' Exp'' | Mul Exp'' Exp''
+data List' a = Nil | Cons a (List' a)
+data Nat' = Zero' | Succ' Nat'
+data Tree' a = Empty | Leaf a | Branch (Tree' a) (Tree' a)
+data Maybe' a = Nothing | Just a
+data Pair' a b = Pair' a b
+data Sum' a b = Left a | Right b
+
+
+type Radius = Float
+type Width = Float
+type Height = Float
+
+data Shape'' = Circle'' Radius | Rect'' Width Height
+
+area :: Shape'' -> Float
+area (Circle'' r) = pi * r ^ 2
+area (Rect'' w h) = w * h
+
+
+evalExp :: Exp'' -> Int
+evalExp (Lit n) = n
+evalExp (Add e f) = (evalExp e) + (evalExp f)
+evalExp (Mul e f) = (evalExp e) * (evalExp f)
+ 
+type Name = String
+data Prop = Var Name
+          | F
+          | T
+          | Not Prop 
+          | Prop :|: Prop 
+          | Prop :&: Prop
+          deriving (Eq, Ord)
+
+type Names = [Name]
+type Env = [(Name, Bool)]
+
+
+
