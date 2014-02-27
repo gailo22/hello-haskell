@@ -1,3 +1,5 @@
+import Control.Applicative
+
 doubleMe :: Int -> Int
 doubleMe x = x + x
 
@@ -205,4 +207,47 @@ type Names = [Name]
 type Env = [(Name, Bool)]
 
 
+{-
+foldr :: (a -> b -> b) -> b -> [a] -> b
+foldr (+) 0 [1,2,3,4,5]
+foldr (*) 1 [1,2,3,4,5]
 
+foldl :: (a -> b -> a) -> a -> [b] -> a
+-}
+
+{-
+data Maybe'' a = Nothing' | Just' a
+
+class Applicative m => Monad' m where
+  return :: a -> m a
+  (>>=) :: m a -> (a -> m b) -> m b
+
+instance Monad' Maybe' where
+  return  x       = Just' x
+  (Just' x) >>= g = g x
+  Nothing' >>= _  = Nothing'
+
+
+instance Functor W where
+  fmap f (W x) = W (f x)
+
+instance Monad W where
+  return x = W x
+  W x >>= f = f x
+
+-}
+
+data W a = W a deriving Show
+
+return' :: a -> W a
+return' x = W x
+
+
+fmap :: (a -> b) -> (W a -> W b)
+fmap f (W x) = W (f x)
+
+bind :: (a -> W b) -> (W a -> W b)
+bind f (W x) = f x
+
+f1 :: Int -> W Int
+f1 x = W (x+1)
